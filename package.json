@@ -131,6 +131,7 @@
     "test:types": "tsc --pretty false build/playcanvas.d.ts"
   },
   "dependencies": {
-    "@atmokyaudio/websdk": "^0.3.4"
+    "@atmokyaudio/websdk": "^0.3.4",
+    "@atmokyaudio/websdk-dev-tools": "^0.2.0"
   }
 }
