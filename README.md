@@ -22,7 +22,7 @@ PlayCanvas is an open-source game engine. It uses HTML5 and WebGL to run games a
 
 ## Develop for the editor on playcanas
 
-Install [mkcert] on your system and run it to generate a self-signed certificate.
+Install [mkcert](https://github.com/FiloSottile/mkcert) on your system and run it to generate a self-signed certificate.
 
 ```
 mkcert -install
@@ -38,7 +38,7 @@ npm run develop
 
 to run a https server with your current development version of the editor.
 
-Go to `https://launch.playcanvas.com/1518068?debug=true&use_local_engine=https://localhost:51000/playcanvas.js` to see your dev engine running.
+Go to https://launch.playcanvas.com/1518068?debug=true&use_local_engine=https://localhost:51000/playcanvas.js to see your dev engine running.
 
 ## Project Showcase
 
