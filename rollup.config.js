@@ -7,6 +7,7 @@ import { terser } from 'rollup-plugin-terser';
 import { version } from './package.json';
 import { visualizer } from 'rollup-plugin-visualizer';
 import { execSync } from 'child_process';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 
 let revision;
 try {
@@ -246,7 +247,8 @@ function buildTarget(buildType, moduleFormat) {
             shaderChunks(buildType !== 'debug'),
             strip(stripOptions[buildType] || stripOptions.release),
             babel(babelOptions[moduleFormat]),
-            spacesToTabs(buildType !== 'debug')
+            spacesToTabs(buildType !== 'debug'),
+            nodeResolve()
         ]
     };
 }

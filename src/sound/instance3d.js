@@ -65,6 +65,7 @@ class SoundInstance3d extends SoundInstance {
     constructor(manager, sound, options = {}) {
         super(manager, sound, options);
 
+        console.log("SoundInstace3D created")
         if (options.position)
             this.position = options.position;
 
@@ -81,11 +82,17 @@ class SoundInstance3d extends SoundInstance {
      */
     _initializeNodes() {
         this.gain = this._manager.context.createGain();
-        this.panner = this._manager.context.createPanner();
-        this.panner.connect(this.gain);
-        this._inputNode = this.panner;
+        // this.panner = this._manager.context.createPanner();
+        // this.panner.connect(this.gain);
+        this._inputNode = this.gain;
         this._connectorNode = this.gain;
-        this._connectorNode.connect(this._manager.context.destination);
+
+        this.atmokySource = this._manager.renderer.createSource()
+        this.atmokySource.setReverbSendDecibels(0)
+        console.log("atmoky: source created")
+
+        //  this._connectorNode.connect(this._manager.context.destination);
+        this.atmokySource.setInput(this._connectorNode)
     }
 
     /**
@@ -95,14 +102,16 @@ class SoundInstance3d extends SoundInstance {
      */
     set position(value) {
         this._position.copy(value);
-        const panner = this.panner;
-        if ('positionX' in panner) {
-            panner.positionX.value = value.x;
-            panner.positionY.value = value.y;
-            panner.positionZ.value = value.z;
-        } else if (panner.setPosition) { // Firefox (and legacy browsers)
-            panner.setPosition(value.x, value.y, value.z);
-        }
+        // const panner = this.panner;
+        // if ('positionX' in panner) {
+        //     panner.positionX.value = value.x;
+        //     panner.positionY.value = value.y;
+        //     panner.positionZ.value = value.z;
+        // } else if (panner.setPosition) { // Firefox (and legacy browsers)
+        //     panner.setPosition(value.x, value.y, value.z);
+        // }
+
+        this.atmokySource.setPosition(-value.z, -value.x, value.y)
     }
 
     get position() {
@@ -133,11 +142,12 @@ class SoundInstance3d extends SoundInstance {
      * @type {number}
      */
     set maxDistance(value) {
-        this.panner.maxDistance = value;
+        // this.panner.maxDistance = value;
     }
 
     get maxDistance() {
-        return this.panner.maxDistance;
+        // return this.panner.maxDistance;
+        return 42;
     }
 
     /**
@@ -147,11 +157,12 @@ class SoundInstance3d extends SoundInstance {
      * @type {number}
      */
     set refDistance(value) {
-        this.panner.refDistance = value;
+        // this.panner.refDistance = value;
     }
 
     get refDistance() {
-        return this.panner.refDistance;
+        // return this.panner.refDistance;
+        return 42;
     }
 
     /**
@@ -160,11 +171,11 @@ class SoundInstance3d extends SoundInstance {
      * @type {number}
      */
     set rollOffFactor(value) {
-        this.panner.rolloffFactor = value;
+        // this.atmokySource.setOcclusion(value)
     }
 
     get rollOffFactor() {
-        return this.panner.rolloffFactor;
+        return 42;
     }
 
     /**
@@ -180,11 +191,12 @@ class SoundInstance3d extends SoundInstance {
      * @type {string}
      */
     set distanceModel(value) {
-        this.panner.distanceModel = value;
+        // this.panner.distanceModel = value;
     }
 
     get distanceModel() {
         return this.panner.distanceModel;
+        return "foo"
     }
 }
 
