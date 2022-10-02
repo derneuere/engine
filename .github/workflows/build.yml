@@ -1,0 +1,35 @@
+name: Build custom engine
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    - name: Setup Node.js 16.x
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16.x
+    - name: Add atmoky repository
+      run: npm config set @atmokyaudio:registry https://gitlab.com/api/v4/projects/36729375/packages/npm/
+    - name: Add atmoky key
+      run: npm config set -- "//gitlab.com/api/v4/projects/36729375/packages/npm/:_authToken" ${{ secrets.ATMOKY_KEY }}
+    - name: Install dependencies
+      run: npm install
+    - name: Build PlayCanvas
+      run: npm run build
+    - name: Upload GitHub Pages artifact
+      uses: actions/upload-pages-artifact@v1.0.4
+      with:
+        # Path of the directory containing the static assets.
+        path: build
+        # Duration after which artifact will expire in days.
+        retention-days: 30
+      
