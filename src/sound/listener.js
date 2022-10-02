@@ -38,6 +38,17 @@ class Listener {
          * @private
          */
         this.orientation = new Mat4();
+
+        // update listener position once renderer has been set up
+        this.atmokyListener = null;
+        this._manager.setupComplete.then(() => {
+            console.log("setup complete")
+            this.atmokyListener = this._manager.renderer.listener;
+            this.atmokyListener.setPosition(-this.position.z, -this.position.x, this.position.y);
+
+            const q = this.orientation.getQuaternion();
+            this.atmokyListener.setRotationQuaternion(q.w, -q.z, -q.x, -q.y);
+        });
     }
 
     /**
@@ -56,15 +67,8 @@ class Listener {
      */
     setPosition(position) {
         this.position.copy(position);
-        const listener = this.listener;
-        if (listener) {
-            if ('positionX' in listener) {
-                listener.positionX.value = position.x;
-                listener.positionY.value = position.y;
-                listener.positionZ.value = position.z;
-            } else if (listener.setPosition) { // Firefox (and legacy browsers)
-                listener.setPosition(position.x, position.y, position.z);
-            }
+        if (this.atmokyListener) {
+            this.atmokyListener.setPosition(-position.z, -position.x, position.y)
         }
     }
 
@@ -96,20 +100,10 @@ class Listener {
      */
     setOrientation(orientation) {
         this.orientation.copy(orientation);
-        const listener = this.listener;
-        if (listener) {
-            const m = orientation.data;
-            if ('forwardX' in listener) {
-                listener.forwardX.value = -m[8];
-                listener.forwardY.value = -m[9];
-                listener.forwardZ.value = -m[10];
 
-                listener.upX.value = m[4];
-                listener.upY.value = m[5];
-                listener.upZ.value = m[6];
-            } else if (listener.setOrientation) { // Firefox (and legacy browsers)
-                listener.setOrientation(-m[8], -m[9], -m[10], m[4], m[5], m[6]);
-            }
+        if (this.atmokyListener) {
+            const q = this.orientation.getQuaternion();
+            this.atmokyListener.setRotationQuaternion(q.w, -q.z, -q.x, q.y);
         }
     }
 

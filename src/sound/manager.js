@@ -94,14 +94,22 @@ class SoundManager extends EventHandler {
             Debug.warn('No support for 3D audio found');
         }
 
-        let manager = new Manager()
-        manager.prepareContext(this.context).then(() => {
-            console.log("atmoky: AudioContext prepared");
-            this.renderer = manager.createRenderer(20, 2);
-            console.log("atmoky: Renderer created");
-            this.renderer.connect(this.context.destination)
-            console.log("atmoky: connected renderer to destination")
-        });
+        this.renderer = null;
+
+        this.setupComplete = new Promise((resolve) => {
+            let manager = new Manager()
+            manager.prepareContext(this.context).then(() => {
+                console.log("atmoky: AudioContext prepared");
+                this.renderer = manager.createRenderer(20, 2);
+                console.log("atmoky: Renderer created");
+                this.renderer.connect(this.context.destination)
+                console.log("atmoky: connected renderer to destination")
+
+                this.renderer.externalizer.amount.value = 60;
+                resolve();
+            });
+        })
+
 
         this.listener = new Listener(this);
 
