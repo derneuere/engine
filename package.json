@@ -75,6 +75,7 @@
     "README-zh.md"
   ],
   "devDependencies": {
+    "@atmokyaudio/websdk-sf": "^0.4.1",
     "@babel/core": "^7.18.10",
     "@babel/eslint-parser": "^7.18.9",
     "@babel/preset-env": "^7.18.10",
@@ -130,9 +131,5 @@
     "test:coverage": "c8 npm test",
     "test:karma": "karma start tests/karma.conf.js -- --single-run --release",
     "test:types": "tsc --pretty false build/playcanvas.d.ts"
-  },
-  "dependencies": {
-    "@atmokyaudio/websdk": "^0.3.4",
-    "@atmokyaudio/websdk-dev-tools": "^0.2.0"
   }
 }
