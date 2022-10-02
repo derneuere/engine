@@ -10,6 +10,8 @@ import { Channel3d } from '../audio/channel3d.js';
 
 import { Listener } from './listener.js';
 
+import { Manager } from '@atmokyaudio/websdk-sf';
+
 const CONTEXT_STATE_RUNNING = 'running';
 const CONTEXT_STATE_INTERRUPTED = 'interrupted';
 
@@ -92,6 +94,15 @@ class SoundManager extends EventHandler {
             Debug.warn('No support for 3D audio found');
         }
 
+        let manager = new Manager()
+        manager.prepareContext(this.context).then(() => {
+            console.log("atmoky: AudioContext prepared");
+            this.renderer = manager.createRenderer(20, 2);
+            console.log("atmoky: Renderer created");
+            this.renderer.connect(this.context.destination)
+            console.log("atmoky: connected renderer to destination")
+        });
+
         this.listener = new Listener(this);
 
         this._volume = 1;
@@ -126,6 +137,8 @@ class SoundManager extends EventHandler {
     get context() {
         // lazy create the AudioContext
         if (!this._context) {
+            console.log("SoundManager: create context lazily")
+
             if (hasAudioContext() || this._forceWebAudioApi) {
                 if (typeof AudioContext !== 'undefined') {
                     this._context = new AudioContext();
@@ -177,6 +190,7 @@ class SoundManager extends EventHandler {
     }
 
     resume() {
+        console.log("SoundManager: context resumed")
         this._selfSuspended = false;
 
         // cannot resume context if it wasn't created yet or if it's still locked
