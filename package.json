@@ -75,6 +75,7 @@
     "README-zh.md"
   ],
   "devDependencies": {
+    "@atmokyaudio/websdk-dev-tools": "^0.2.0",
     "@atmokyaudio/websdk-sf": "^0.4.1",
     "@babel/core": "^7.18.10",
     "@babel/eslint-parser": "^7.18.9",

@@ -157,7 +157,6 @@ class SoundInstance3d extends SoundInstance {
      * @type {number}
      */
     set refDistance(value) {
-        this.atmokySource.setReverbSendLinear(value)
         // this.panner.refDistance = value;
     }
 
