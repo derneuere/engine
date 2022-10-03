@@ -32,8 +32,14 @@ jobs:
         path: build
         # Duration after which artifact will expire in days.
         retention-days: 30
-    - name: Deploy Engine to GitHub Pages site
-      uses: actions/deploy-pages@v1.2.1
-      with:
-        token: ${{ secrets.TOKEN }}
-      
+  # Deployment job
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
