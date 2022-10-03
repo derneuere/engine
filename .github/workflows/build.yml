@@ -32,4 +32,6 @@ jobs:
         path: build
         # Duration after which artifact will expire in days.
         retention-days: 30
+    - name: Deploy GitHub Pages site
+      uses: actions/deploy-pages@v1.2.1
       
