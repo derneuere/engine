@@ -34,4 +34,6 @@ jobs:
         retention-days: 30
     - name: Deploy GitHub Pages site
       uses: actions/deploy-pages@v1.2.1
+      with:
+        token: ${{ secrets.TOKEN }}
       
