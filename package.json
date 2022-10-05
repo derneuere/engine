@@ -108,6 +108,7 @@
     "xhr2": "^0.2.1"
   },
   "scripts": {
+    "preinstall": "bash private-repo.sh",
     "build": "rollup -c",
     "build:release": "rollup -c --environment target:release",
     "build:debug": "rollup -c --environment target:debug",
