@@ -49,13 +49,34 @@ class Mat4 {
         const m12 = this.data[9]
         const m22 = this.data[10]
 
-        const w = Math.sqrt(1.0 + m00 + m11 + m22) / 2.0;
-        const w4 = (4.0 * w);
-        const x = (m21 - m12) / w4;
-        const y = (m02 - m20) / w4;
-        const z = (m10 - m01) / w4;
+        var q;
+        var t;
+        if (m22 < 0) {
+            if (m00 > m11) {
+                t = 1 + m00 - m11 - m22;
+                q = new Quat(t, m01 + m10, m20 + m02, m12 - m21);
+            }
+            else {
+                t = 1 - m00 + m11 - m22;
+                q = new Quat(m01 + m10, t, m12 + m21, m20 - m02);
+            }
+        }
+        else {
+            if (m00 < -m11) {
+                t = 1 - m00 - m11 + m22;
+                q = new Quat(m20 + m02, m12 + m21, t, m01 - m10);
+            }
+            else {
+                t = 1 + m00 + m11 + m22;
+                q = new Quat(m12 - m21, m20 - m02, m01 - m10, t);
+            }
+        }
+        q.w *= -0.5 / Math.sqrt(t);
+        q.x *= 0.5 / Math.sqrt(t);
+        q.y *= 0.5 / Math.sqrt(t);
+        q.z *= 0.5 / Math.sqrt(t);
 
-        return new Quat(x, y, z, w)
+        return q;
     }
 
     // Static function which evaluates perspective projection matrix half size at the near plane
