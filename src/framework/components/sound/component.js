@@ -4,6 +4,8 @@ import { DISTANCE_LINEAR } from '../../../audio/constants.js';
 
 import { Component } from '../component.js';
 
+import { Vec3 } from '../../../math/vec3.js';
+
 import { SoundSlot } from './slot.js';
 
 /** @typedef {import('../../entity.js').Entity} Entity */
@@ -39,7 +41,8 @@ class SoundComponent extends Component {
         this._rollOffFactor = 1;
         /** @private */
         this._distanceModel = DISTANCE_LINEAR;
-
+        /** @private */
+        this._position = new Vec3();
         /**
          * @type {Object<string, SoundSlot>}
          * @private
@@ -48,6 +51,30 @@ class SoundComponent extends Component {
 
         /** @private */
         this._playingBeforeDisable = {};
+
+        // this is the gainnode which will be connected to
+        // the atmoky source once the renderer is set up
+        // all slots and their soundinstances will be connected
+        // to this GainNode as a "mixer" for the atmoky Source input
+        this.gainNode = system.manager.context.createGain();
+        this.gainNode.gain.value = this._volume;
+
+        this.atmokySource = null;
+        system.manager.setupComplete.then(() => {
+            this.atmokySource = system.manager.renderer.createSource();
+            this.atmokySource.setInput(this.gainNode);
+
+            this.atmokySource.setPosition(-this._position.z, -this._position.x, this._position.y)
+
+        });
+
+    }
+
+    updatePosition(position) {
+        this._position.copy(position)
+
+        if (this.atmokySource)
+            this.atmokySource.setPosition(-position.z, -position.x, position.y)
     }
 
     /**
@@ -199,7 +226,7 @@ class SoundComponent extends Component {
      */
     set volume(value) {
         this._volume = value;
-        this._updateSoundInstances('volume', value, true);
+        this.gainNode.gain.value = value;
     }
 
     get volume() {

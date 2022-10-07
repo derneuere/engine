@@ -151,10 +151,7 @@ class SoundComponentSystem extends ComponentSystem {
                     // Update slot position if this is a 3d sound
                     if (component.enabled && component.positional) {
                         const position = entity.getPosition();
-                        const slots = component.slots;
-                        for (const key in slots) {
-                            slots[key].updatePosition(position);
-                        }
+                        component.updatePosition(position)
                     }
                 }
             }

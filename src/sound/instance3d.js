@@ -62,10 +62,11 @@ class SoundInstance3d extends SoundInstance {
      * doesn't fall off anymore.
      * @param {number} [options.rollOffFactor=1] - The factor used in the falloff equation.
      */
-    constructor(manager, sound, options = {}) {
+    constructor(manager, sound, gainNode, options = {}) {
         super(manager, sound, options);
 
-        console.log("SoundInstace3D created")
+        this._connectorNode.connect(gainNode)
+
         if (options.position)
             this.position = options.position;
 
@@ -82,17 +83,8 @@ class SoundInstance3d extends SoundInstance {
      */
     _initializeNodes() {
         this.gain = this._manager.context.createGain();
-        // this.panner = this._manager.context.createPanner();
-        // this.panner.connect(this.gain);
         this._inputNode = this.gain;
         this._connectorNode = this.gain;
-
-        this.atmokySource = this._manager.renderer.createSource()
-        this.atmokySource.setReverbSendDecibels(0)
-        console.log("atmoky: source created")
-
-        //  this._connectorNode.connect(this._manager.context.destination);
-        this.atmokySource.setInput(this._connectorNode)
     }
 
     /**
@@ -102,16 +94,6 @@ class SoundInstance3d extends SoundInstance {
      */
     set position(value) {
         this._position.copy(value);
-        // const panner = this.panner;
-        // if ('positionX' in panner) {
-        //     panner.positionX.value = value.x;
-        //     panner.positionY.value = value.y;
-        //     panner.positionZ.value = value.z;
-        // } else if (panner.setPosition) { // Firefox (and legacy browsers)
-        //     panner.setPosition(value.x, value.y, value.z);
-        // }
-
-        this.atmokySource.setPosition(-value.z, -value.x, value.y)
     }
 
     get position() {
@@ -195,7 +177,7 @@ class SoundInstance3d extends SoundInstance {
     }
 
     get distanceModel() {
-        return this.panner.distanceModel;
+        // return this.panner.distanceModel;
         return "foo"
     }
 }

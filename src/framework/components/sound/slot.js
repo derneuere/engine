@@ -390,7 +390,7 @@ class SoundSlot extends EventHandler {
             data.rollOffFactor = component.rollOffFactor;
             data.distanceModel = component.distanceModel;
 
-            instance = new SoundInstance3d(this._manager, sound, data);
+            instance = new SoundInstance3d(this._manager, sound, component.gainNode, data);
         } else {
             instance = new SoundInstance(this._manager, sound, data);
         }

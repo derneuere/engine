@@ -105,8 +105,6 @@ class SoundManager extends EventHandler {
                 console.log("atmoky: Renderer created");
                 this.renderer.connect(this.context.destination)
                 console.log("atmoky: connected renderer to destination")
-
-                this.renderer.externalizer.amount.value = 60;
                 resolve();
             });
         })
