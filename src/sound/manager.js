@@ -11,7 +11,7 @@ import { Channel3d } from '../audio/channel3d.js';
 import { Listener } from './listener.js';
 
 import { Manager } from '@atmokyaudio/websdk-sf';
-import { openAttenuationCurveDesigner } from '@atmokyaudio/websdk-dev-tools';
+import { openAttenuationCurveDesigner, openSourceViewer } from '@atmokyaudio/websdk-dev-tools';
 
 const CONTEXT_STATE_RUNNING = 'running';
 const CONTEXT_STATE_INTERRUPTED = 'interrupted';
@@ -119,6 +119,10 @@ class SoundManager extends EventHandler {
 
     openAttenuationCurveDesigner() {
         openAttenuationCurveDesigner(this.renderer);
+    }
+
+    openSourceViewer() {
+        openSourceViewer(this.renderer);
     }
 
     /**
